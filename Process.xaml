@@ -8,10 +8,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>324,944</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>496,1534</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="22">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -34,6 +34,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Xml.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -61,13 +62,15 @@
       <AssemblyReference>UiPath.Mail</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description: In this file all other process specific files will be invoked. If an application exception occurs, the current transaction can be retried. If a BRE is thrown, the transaction will be skipped. Can be a flowchart or sequence. " DisplayName="ProcessTransaction" sap:VirtualizedContainerService.HintSize="304,844" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description: In this file all other process specific files will be invoked. If an application exception occurs, the current transaction can be retried. If a BRE is thrown, the transaction will be skipped. Can be a flowchart or sequence. " DisplayName="ProcessTransaction" sap:VirtualizedContainerService.HintSize="602,1936" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:Browser" Name="TechCrunchStartupBrowser" />
       <Variable x:TypeArguments="ui:Browser" Name="NewsPageBrowser" />
       <Variable x:TypeArguments="x:String" Name="NewsText" />
+      <Variable x:TypeArguments="sd:DataTable" Name="TableNews" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -75,14 +78,85 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Get Startup News" sap:VirtualizedContainerService.HintSize="262,83" sap2010:WorkflowViewState.IdRef="Sequence_5">
+    <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" Browser="[in_Browser]" BrowserType="Chrome" DisplayName="Attach TechCrunch Browser - Search Startup News" sap:VirtualizedContainerService.HintSize="560,404" sap2010:WorkflowViewState.IdRef="BrowserScope_3" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]" UiBrowser="[TechCrunchStartupBrowser]">
+      <ui:BrowserScope.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Search Startup News" sap:VirtualizedContainerService.HintSize="376,296" sap2010:WorkflowViewState.IdRef="Sequence_6">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click - Search" sap:VirtualizedContainerService.HintSize="334,68" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+              <ui:Click.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:Click.CursorPosition>
+              <ui:Click.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="&lt;webctrl parentid='root' tag='LABEL' innertext='Search' /&gt;" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]">
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:Click.Target>
+            </ui:Click>
+            <ui:TypeInto ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateType="{x:Null}" Activate="True" DisplayName="Type Into - Search" EmptyField="True" sap:VirtualizedContainerService.HintSize="334,96" sap2010:WorkflowViewState.IdRef="TypeInto_1" Text="[in_TransactionItem(&quot;Nome da startup&quot;).ToString + &quot;[k(enter)]&quot;]">
+              <ui:TypeInto.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="&lt;webctrl id='search-box-form__input' tag='INPUT' /&gt;" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]">
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:TypeInto.Target>
+            </ui:TypeInto>
+          </Sequence>
+        </ActivityAction>
+      </ui:BrowserScope.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </Sequence>
-    <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" Browser="[in_Browser]" BrowserType="Chrome" DisplayName="Attach TechCrunch Browser" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="BrowserScope_1" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]" UiBrowser="[TechCrunchStartupBrowser]">
+    </ui:BrowserScope>
+    <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" Browser="[in_Browser]" BrowserType="Chrome" DisplayName="Attach TechCrunch Browser - Get Startup News" sap:VirtualizedContainerService.HintSize="560,553" sap2010:WorkflowViewState.IdRef="BrowserScope_4" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]" UiBrowser="[TechCrunchStartupBrowser]">
+      <ui:BrowserScope.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Get Startup News" sap:VirtualizedContainerService.HintSize="526,445" sap2010:WorkflowViewState.IdRef="Sequence_7">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:ExtractData DelayBetweenPagesMS="{x:Null}" ContinueOnError="True" DataTable="[TableNews]" DisplayName="Extract Structured Data - News (title, url and date)" ExtractMetadata="&lt;extract&gt;&lt;row exact='1'&gt;&lt;webctrl tag='li'/&gt;&lt;webctrl tag='div' class='d-tc' idx='1'/&gt;&lt;/row&gt;&lt;column exact='1' name='Título da notícia' attr='text' name2='URL da notícia' attr2='href'&gt;&lt;webctrl tag='li'/&gt;&lt;webctrl tag='div' class='d-tc' idx='1'/&gt;&lt;webctrl tag='h4' class='pb-10' idx='1'/&gt;&lt;webctrl tag='a' class=' fz-20 lh-22 fw-b' idx='1'/&gt;&lt;/column&gt;&lt;column exact='1' name='Data da notícia' attr='text'&gt;&lt;webctrl tag='li'/&gt;&lt;webctrl tag='div' class='d-tc' idx='1'/&gt;&lt;webctrl tag='div' class='mt-10 fz-13' idx='1'/&gt;&lt;webctrl tag='p' class='csub' idx='1'/&gt;&lt;webctrl tag='span' class=' pl-15 bl-1-666' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="484,106" sap2010:WorkflowViewState.IdRef="ExtractData_1" MaxNumberOfResults="0" NextLinkSelector="&lt;webctrl aaname='Next' parentid='left' tag='A' /&gt;" SimulateClick="True">
+              <ui:ExtractData.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="682ba201bca21cb391917dd2d7ba2032" Selector="&lt;webctrl parentid='web' tag='UL' /&gt;" TimeoutMS="[CInt(in_Config(&quot;TimeoutShort&quot;).ToString)]" WaitForReady="COMPLETE" />
+              </ui:ExtractData.Target>
+            </ui:ExtractData>
+            <If Condition="[TableNews.Rows.Count = 0]" sap:VirtualizedContainerService.HintSize="484,207" sap2010:WorkflowViewState.IdRef="If_3" />
+          </Sequence>
+        </ActivityAction>
+      </ui:BrowserScope.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:BrowserScope>
+    <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" Browser="[in_Browser]" BrowserType="Chrome" DisplayName="Attach TechCrunch Browser - Navigate to News Page" sap:VirtualizedContainerService.HintSize="560,259" sap2010:WorkflowViewState.IdRef="BrowserScope_1" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]" UiBrowser="[TechCrunchStartupBrowser]">
       <ui:BrowserScope.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
@@ -100,12 +174,12 @@
       </ui:BrowserScope.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:BrowserScope>
-    <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" BrowserType="Chrome" DisplayName="Attach News Browser" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="BrowserScope_2" Selector="[&quot;&lt;html app='chrome.exe' url='&quot;+ in_TransactionItem(&quot;URL da notícia&quot;).ToString +&quot;' /&gt;&quot;]" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]" UiBrowser="[NewsPageBrowser]">
+    <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" BrowserType="Chrome" DisplayName="Attach News Browser" sap:VirtualizedContainerService.HintSize="560,51" sap2010:WorkflowViewState.IdRef="BrowserScope_2" Selector="[&quot;&lt;html app='chrome.exe' url='&quot;+ in_TransactionItem(&quot;URL da notícia&quot;).ToString +&quot;' /&gt;&quot;]" TimeoutMS="[CInt(in_Config(&quot;TimeoutMedium&quot;).ToString)]" UiBrowser="[NewsPageBrowser]">
       <ui:BrowserScope.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
@@ -188,7 +262,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:BrowserScope>
-    <Assign DisplayName="Assign News Text" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign DisplayName="Assign News Text" sap:VirtualizedContainerService.HintSize="560,60" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Object">[in_TransactionItem("Texto da notícia")]</OutArgument>
       </Assign.To>
@@ -196,7 +270,7 @@
         <InArgument x:TypeArguments="x:Object">[NewsText]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Assign Startup" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Assign Startup" sap:VirtualizedContainerService.HintSize="560,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Object">[in_TransactionItem("Nome da startup")]</OutArgument>
       </Assign.To>
@@ -204,7 +278,7 @@
         <InArgument x:TypeArguments="x:Object">[in_Startup]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Assign Vehicle" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+    <Assign DisplayName="Assign Vehicle" sap:VirtualizedContainerService.HintSize="560,60" sap2010:WorkflowViewState.IdRef="Assign_4">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Object">[in_TransactionItem("Nome do veículo")]</OutArgument>
       </Assign.To>
@@ -212,7 +286,7 @@
         <InArgument x:TypeArguments="x:Object">["Tech Crunch"]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Assign Capture Date" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+    <Assign DisplayName="Assign Capture Date" sap:VirtualizedContainerService.HintSize="560,60" sap2010:WorkflowViewState.IdRef="Assign_5">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Object">[in_TransactionItem("Data e hora da Captura")]</OutArgument>
       </Assign.To>
